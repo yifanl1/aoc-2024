@@ -69,7 +69,7 @@ def get_input(day):
     path = f"../inputs/{day:02d}.in"
     if not os.path.exists(path):
         headers = {"Cookie": COOKIE}
-        url = f"https://adventofcode.com/2022/day/{day}/input"
+        url = f"https://adventofcode.com/2024/day/{day}/input"
 
         response = requests.get(url, headers=headers)
         with open(path, "w") as in_file:
