@@ -8,7 +8,6 @@ import itertools
 import os
 
 COOKIE = open("../.mycookie", "r").read()
-print(COOKIE)
 
 
 class Coordinate(NamedTuple):
@@ -79,6 +78,14 @@ def get_input(day):
     with open(path, "r") as in_file:
         return in_file.read()
 
+def write_output(output, day, print_answer=True, w=False, append=False):
+    path = f"../outputs/{day:02d}.out"
+    if w:
+        mode = "a" if append else "w"
+        with open(path, mode) as outf:
+            outf.write(f"{str(output)}\n")
+    if print_answer:
+        print(output)
 
 def gcd(a, b):
     if a < b:
