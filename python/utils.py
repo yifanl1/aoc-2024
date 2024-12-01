@@ -8,6 +8,7 @@ import itertools
 import os
 
 COOKIE = open("../.mycookie", "r").read()
+print(COOKIE)
 
 
 class Coordinate(NamedTuple):
