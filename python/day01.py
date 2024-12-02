@@ -3,10 +3,10 @@ from collections import defaultdict
 
 inp = utils.get_input(1)
 rows = inp.split("\n")
+
 c1 = []
 c2 = []
-
-freq = defaultdict(int)  
+freq = defaultdict(int)
 
 for row in rows:
     if not row:
@@ -24,6 +24,6 @@ ans2 = 0
 for i, a in enumerate(c1):
     ans += abs(a - c2[i])
     ans2 += a * freq.get(a, 0)
-utils.write_output(ans, day=1, w=True)
+utils.write_output(ans, day=1, w=True, append=False)
 utils.write_output(ans2, day=1, w=True, append=True)
 
