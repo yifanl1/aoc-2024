@@ -1,5 +1,4 @@
 import utils
-from collections import defaultdict
 
 inp = utils.get_input(2).strip()
 sample_inp = """7 6 4 2 1
@@ -11,36 +10,37 @@ sample_inp = """7 6 4 2 1
 """.strip()
 # inp = sample_inp
 
-reports = (list(map(int, row.split())) for row in inp.split("\n"))
-
-safe = 0
-safe2 = 0
 
 def get_unsafe(report):
     last_level = report[0]
-    idx = 1
-    for level in report[1:]:
-        if not (0 < (level - last_level) <= 3):
-            return (idx, idx - 1)
-        idx += 1
+    for idx, level in enumerate(report[1:]):
+        if (level - last_level) not in {1, 2, 3}:
+            return (idx, idx + 1)
         last_level = level
     return None
 
-for report in reports:
-    for r in (report, report[::-1]):
-        unsafe_spots = get_unsafe(r)
-        found_safe = False
-        if unsafe_spots is None:
-            safe += 1
-            safe2 += 1
-            break
-        for idx in unsafe_spots:
-            if get_unsafe([*r[:idx], *r[idx+1:]]) is None:
-                found_safe = True
-                safe2 += 1
-                break
-        if found_safe:
-            break
+def test_report(r):
+    unsafe_spots = get_unsafe(r)
+    if unsafe_spots is None:
+        return 1
+    for idx in unsafe_spots:
+        if get_unsafe([*r[:idx], *r[idx+1:]]) is None:
+            return 2
+    return 0
 
-utils.write_output(safe, day=2, w=True, append=False)
-utils.write_output(safe2, day=2, w=True, append=True)
+
+results = [0, 0, 0]
+
+reports = tuple(
+    list(map(int, row.split())) 
+    for row in utils.get_input(day=2).strip().split("\n")
+)
+
+for report in reports:
+    result = test_report(report)
+    if not result:
+        result = test_report(report[::-1])
+    results[result] += 1
+
+utils.write_output(results[1], day=2, w=True, append=False)
+utils.write_output(results[1] + results[2], day=2, w=True, append=True)
