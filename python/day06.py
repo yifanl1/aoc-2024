@@ -22,6 +22,9 @@ rows = inp.strip().split("\n")
 X = len(rows)
 Y = len(rows[0])
 
+# This is abusive, please don't do this
+INDICES = {x: {y: 0 for y in range(Y)} for x in range(X)}
+
 pos = None
 walls = set()
 for x, row in enumerate(rows):
@@ -37,19 +40,20 @@ def traverse_map(walls, spos):
     seen2 = {(spos, 0)}
     pos = spos
     d = 0
-    while True:
-        dir_ = DIRS[d]
-        pos_ = pos[0] + dir_[0], pos[1] + dir_[1]
-        if pos_ in walls:
-            d = (d + 1) % 4
-            continue
-        if not (0 <= pos_[0] < X and 0 <= pos_[1] < Y):
-            return seen
-        if (pos_, dir_) in seen2:
-            raise ValueError("BAD")
-        seen.add(pos_)
-        seen2.add((pos_, dir_))
-        pos = pos_
+    try:
+        while True:
+            pos_ = (pos[0] + DIRS[d][0], pos[1] + DIRS[d][1])
+            if pos_ in walls:
+                d = (d + 1) % 4
+                continue
+            INDICES[pos_[0]][pos_[1]]
+            if (pos_, d) in seen2:
+                raise ValueError("BAD")
+            seen.add(pos_)
+            seen2.add((pos_, d))
+            pos = pos_
+    except KeyError:
+        return seen
 
 ans1 = traverse_map(walls, pos)
 utils.write_output(len(ans1), day=6, append=0, w=1)
