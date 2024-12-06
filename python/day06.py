@@ -1,5 +1,4 @@
 import utils
-from collections import defaultdict
 
 inp = utils.get_input(day=6)
 sample_inp = """....#.....
@@ -14,56 +13,46 @@ sample_inp = """....#.....
 ......#...
 """
 # inp = sample_inp
-DIRS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-d = 0
-
+DIRS = (-1, 1j, 1, -1j)
 rows = inp.strip().split("\n")
 
-X = len(rows)
-Y = len(rows[0])
-
 # This is abusive, please don't do this
-INDICES = {x: {y: 0 for y in range(Y)} for x in range(X)}
+INDICES = {(x + y * 1j): 0 for y in range(len(rows[0])) for x in range(len(rows))}
+
+def traverse_map(walls, spos):
+    d, pos, seen, seen_walls = 0, spos, {spos}, set()
+    try:
+        while True:
+            pos_ = pos + DIRS[d]
+            if pos_ in walls:
+                if (pos_, d) in seen_walls:
+                    return None
+                seen_walls.add((pos_, d))
+                d = (d + 1) % 4
+                continue
+            INDICES[pos_]
+            seen.add(pos_)
+            pos = pos_
+    except KeyError:
+        return seen
 
 pos = None
 walls = set()
 for x, row in enumerate(rows):
     for y, c in enumerate(row):
         if c == "#":
-            walls.add((x, y))
+            walls.add(x + y * 1j)
         if c == "^":
-            pos = (x, y)
+            pos = x + y * 1j
 assert pos is not None
 
-def traverse_map(walls, spos):
-    seen = {spos}
-    seen2 = {(spos, 0)}
-    pos = spos
-    d = 0
-    try:
-        while True:
-            pos_ = (pos[0] + DIRS[d][0], pos[1] + DIRS[d][1])
-            if pos_ in walls:
-                d = (d + 1) % 4
-                continue
-            INDICES[pos_[0]][pos_[1]]
-            if (pos_, d) in seen2:
-                raise ValueError("BAD")
-            seen.add(pos_)
-            seen2.add((pos_, d))
-            pos = pos_
-    except KeyError:
-        return seen
-
-ans1 = traverse_map(walls, pos)
-utils.write_output(len(ans1), day=6, append=0, w=1)
+seen = traverse_map(walls, pos)
+utils.write_output(len(seen), day=6, append=0, w=1)
 
 impossible = 0
-for p in ans1:
+for p in seen:
     if p in walls or p == pos:
         continue
-    try: 
-        traverse_map(walls.union({p}), pos)
-    except ValueError:
+    if traverse_map(walls.union({p}), pos) is None:
         impossible += 1
 utils.write_output(impossible, day=6, append=1, w=1)
