@@ -1,5 +1,8 @@
 import utils
 import re
+import time
+
+s = time.time()
 
 inp = utils.get_input(3)
 sample_inp = 'xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))'
@@ -15,3 +18,6 @@ range_pattern = re.compile(r'(?:do\(\)|^)(.*?)(?:(don\'t\(\))|$)', re.DOTALL)
 ranges = re.finditer(range_pattern, inp)
 ans2 = sum(sum(map(mul, re.finditer(mul_pattern, r[1]))) for r in ranges)
 utils.write_output(ans2, day=3, w=True, append=True)
+
+e = time.time()
+utils.print_time_diff(s, e)

@@ -1,5 +1,7 @@
 import utils
 from collections import defaultdict
+import time
+s = time.time()
 
 inp = utils.get_input(day=5)
 sample_inp = """47|53
@@ -71,3 +73,6 @@ for update in updates:
         ans += v
 utils.write_output(ans, day=5, append=False, w=True)
 utils.write_output(ans2, day=5, append=True, w=True)
+
+e = time.time()
+utils.print_time_diff(s, e)

@@ -78,9 +78,9 @@ def get_input(day):
     with open(path, "r") as in_file:
         return in_file.read()
 
-def write_output(output, day, w=False, append=True):
+def write_output(output, day, *, w=False, append=False):
     path = f"../outputs/{day:02d}.out"
-    if w:
+    if (w or append):
         mode = "a" if append else "w"
         with open(path, mode) as outf:
             outf.write(f"{str(output)}\n")
@@ -112,3 +112,7 @@ def hex_to_bin(hexstr):
 
 def tuple_replace(tup, idx, new):
     return tuple(tup[i] if i != idx else new for i in range(len(tup)))
+
+def print_time_diff(s, e):
+    dt = (e - s)
+    print(f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}us")

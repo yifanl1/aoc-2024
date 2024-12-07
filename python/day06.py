@@ -1,4 +1,7 @@
 import utils
+import time
+
+s = time.time()
 
 inp = utils.get_input(day=6)
 sample_inp = """....#.....
@@ -47,12 +50,11 @@ for x, row in enumerate(rows):
 assert pos is not None
 
 seen = traverse_map(walls, pos)
-utils.write_output(len(seen), day=6, append=0, w=1)
+utils.write_output(len(seen), day=6, w=1)
 
-impossible = 0
-for p in seen:
-    if p in walls or p == pos:
-        continue
-    if traverse_map(walls.union({p}), pos) is None:
-        impossible += 1
-utils.write_output(impossible, day=6, append=1, w=1)
+f = lambda p: traverse_map(walls.union({p}), pos) is None
+impossible = sum(map(f, seen - (walls | {pos})))
+utils.write_output(impossible, day=6, append=1)
+
+e = time.time()
+utils.print_time_diff(s, e)

@@ -1,4 +1,7 @@
 import utils
+import time
+
+s = time.time()
 
 inp = utils.get_input(2).strip()
 sample_inp = """7 6 4 2 1
@@ -44,3 +47,6 @@ for report in reports:
 
 utils.write_output(results[1], day=2, w=True, append=False)
 utils.write_output(results[1] + results[2], day=2, w=True, append=True)
+
+e = time.time()
+utils.print_time_diff(s, e)
