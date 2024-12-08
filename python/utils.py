@@ -68,7 +68,7 @@ class PQ:
 def get_input(day):
     path = f"../inputs/{day:02d}.in"
     if not os.path.exists(path):
-        headers = {"Cookie": COOKIE}
+        headers = {"Cookie": COOKIE, "User-Agent": "yifanl1 AOCUtils"}
         url = f"https://adventofcode.com/2024/day/{day}/input"
 
         response = requests.get(url, headers=headers)
@@ -87,6 +87,7 @@ def write_output(output, day, *, w=False, append=False, a=False):
     print(output)
 
 def gcd(a, b):
+    a, b = abs(a), abs(b)
     if a < b:
         a, b = b, a
     while a % b:
