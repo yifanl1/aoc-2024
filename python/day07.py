@@ -17,33 +17,30 @@ sample_inp = """190: 10 19
 # inp = sample_inp
 
 def validate(target, vals, n, elephantmath=False):
-    if n == 0:
-        return target == vals[n]
     v = vals[n]
-    if target % v == 0:
+    if not n:
+        return target == v
+    if v > target:
+        return False
+    if not target % v:
         if validate(target // v, vals, n - 1, elephantmath):
             return True
-    if target >= v:
-        if validate(target - v, vals, n - 1, elephantmath):
-            return True
     if elephantmath:
-        digits = len(str(v))
-        end = 10 ** digits
-        if target % end == v:
-            if validate(target // end, vals, n - 1, elephantmath):
-                return True
-    return False
+        if target % 10 ** len(str(v)) == v and validate(target // 10 ** len(str(v)), vals, n - 1, elephantmath):
+            return True
+    return validate(target - v, vals, n - 1, elephantmath)
 
-ans = 0
-ans2 = 0
+def parse_inp(inp):
+    rows = []
+    for r in inp.strip().split("\n"):
+        target, rest = r.split(":", maxsplit=1)
+        vals = tuple(map(int, rest.split()))
+        rows.append((int(target), vals))
+    return rows
 
-for row in inp.strip().split("\n"):
-    target, rest = row.split(":", maxsplit=1)
-    vals = tuple(map(int, rest.split()))
-    if validate(int(target), vals, len(vals) - 1, elephantmath=True):
-        ans2 += int(target)
-        if validate(int(target), vals, len(vals) - 1, elephantmath=False):
-            ans += int(target)
+rows = parse_inp(inp)
+ans = sum(t for t, v in rows if validate(t, v, len(v) - 1, elephantmath=False))
+ans2 = sum(t for t, v in rows if validate(t, v, len(v) - 1, elephantmath=True))
 
 utils.write_output(ans, day=7, w=1)
 utils.write_output(ans2, day=7, append=1)
