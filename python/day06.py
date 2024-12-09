@@ -1,5 +1,6 @@
 import utils
 import time
+import multiprocessing as mp
 
 s = time.time()
 
@@ -49,12 +50,21 @@ for x, row in enumerate(rows):
             pos = x + y * 1j
 assert pos is not None
 
-seen = traverse_map(walls, pos)
-utils.write_output(len(seen), day=6, w=1)
+def f(p): 
+    return int(traverse_map(walls.union({p}), pos) is None)
 
-f = lambda p: traverse_map(walls.union({p}), pos) is None
-impossible = sum(map(f, seen - (walls | {pos})))
-utils.write_output(impossible, day=6, append=1)
+if __name__ == "__main__":
+    mp.freeze_support()
 
-e = time.time()
-utils.print_time_diff(s, e)
+    seen = traverse_map(walls, pos)
+    utils.write_output(len(seen), day=6, w=1)
+
+    l = list(seen - (walls | {pos}))
+    n = 0
+    with mp.Pool(8) as p:
+        impossible = sum(p.imap_unordered(f, l, 100))
+
+    utils.write_output(impossible, day=6, append=1)
+
+    e = time.time()
+    utils.print_time_diff(s, e)
