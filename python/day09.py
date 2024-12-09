@@ -3,10 +3,9 @@ import utils
 inp = utils.get_input(9)
 sample_inp = "2333133121414131402"
 # inp = sample_inp
-# inp = "12121"
 
 pid = 0
-free = set()
+free = []
 free_blocks = {}
 filled = {}
 blocks = {}
@@ -15,26 +14,28 @@ for i, l in enumerate(inp.strip()):
     l = int(l)
     if i % 2:
         if l:
-            free |= set(range(pos, pos + l))
+            free.extend(list(range(pos, pos + l)))
             free_blocks[pos] = l
     else:
-        for j in range(pos, pos + l):
-            filled[j] = pid
+        filled[pid] = list(range(pos, pos + l))[::-1]
         blocks[pid] = pos, l
         pid += 1
     pos += l
 
-while True:
-    k = max(filled.keys())
-    m = min(free)
-    if m > k:
-        break
-    v = filled[k]
-    del filled[k]
-    free -= {m}
-    filled[m] = v
+new_filled = {}
+for pid in sorted(filled.keys(), key=lambda x: -x):
+    for k in filled[pid]:
+        if free:
+            m = free[0]
+            if m > k:
+                new_filled[k] = pid
+            else:
+                new_filled[m] = pid
+                free.pop(0)
+        else:
+            new_filled[k] = pid
 ans = 0
-for k, v in filled.items():
+for k, v in new_filled.items():
     ans += (k * v)
 utils.write_output(ans, day=9, w=1)
 
