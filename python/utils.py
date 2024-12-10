@@ -99,6 +99,10 @@ def lcm(a, b):
     return (a * b) // gcd(a, b)
 
 
+def rsum(a, b):
+    # returns a + a + 1 + a + 2 + ... + b - 1
+    return (abs(b - a) * (a + b - 1)) // 2
+
 
 def hex_to_bin(hexstr):
     bin_repr = bin(int(hexstr, 16))[2:]
