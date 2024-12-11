@@ -9,10 +9,20 @@ import os
 
 COOKIE = open("../.mycookie", "r").read()
 
-
-class Coordinate(NamedTuple):
+class Point2D(NamedTuple):
     x: int
     y: int
+
+class Point3D(NamedTuple):
+    x: int
+    y: int
+    z: int
+
+class Point4D(NamedTuple):
+    x: int
+    y: int
+    z: int
+    w: int
 
 
 class Graph:
@@ -103,6 +113,10 @@ def rsum(a, b):
     # returns a + a + 1 + a + 2 + ... + b - 1
     return (abs(b - a) * (a + b - 1)) // 2
 
+_LOG2_10 = 3.32192809488736
+def int_len(n):
+    l = int(n.bit_length() / _LOG2_10)
+    return (10 ** l <= abs(n)) + l
 
 def hex_to_bin(hexstr):
     bin_repr = bin(int(hexstr, 16))[2:]

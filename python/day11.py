@@ -10,18 +10,18 @@ sample_inp = "125 17\n"
 def stone_transform(stone: int) -> tuple[int, ...]:
     if stone == 0:
         return (1,)
-    l = len(str(stone))
-    if l % 2 == 0:
-        r, l = int(str(stone)[:l // 2]), int(str(stone)[l // 2:])
-        return r, l
+    d = utils.int_len(stone)
+    if d % 2 == 0:
+        return stone // 10 ** (d // 2), stone % 10 ** (d // 2)
     return (stone * 2024,)
 
 ctr = defaultdict(int)
 for i in inp.strip().split():
     ctr[int(i)] += 1
 
-CUTOFFS = (24, 74)
-for i in range(500):
+for i in range(75):
+    if i == 25:
+        utils.write_output(ans, day=11, w=1)
     ans = 0
     new_ctr = defaultdict(int)
     for k, v in ctr.items():
@@ -29,11 +29,7 @@ for i in range(500):
             new_ctr[k_] += v
             ans += v
     ctr = new_ctr
-    if i == CUTOFFS[0]:
-        utils.write_output(ans, day=11, w=1)
-    if i == CUTOFFS[1]:
-        utils.write_output(ans, day=11, a=1)
-    print(i + 1, ans)
 
+utils.write_output(ans, day=11, a=1)
 _e = time.time()
 utils.print_time_diff(_s, _e)
