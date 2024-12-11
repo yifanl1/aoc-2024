@@ -1,7 +1,5 @@
 import utils
-import time
-
-s = time.time()
+import time; _s = time.time()
 
 inp = utils.get_input(day=7)
 sample_inp = """190: 10 19
@@ -16,17 +14,18 @@ sample_inp = """190: 10 19
 """
 # inp = sample_inp
 
-def validate(target, vals, n, elephantmath=False):
+def validate(target: int, vals: tuple[int, ...], n: int, elephantmath: bool = False) -> bool:
     v = vals[n]
     if not n:
         return target == v
     if v > target:
         return False
-    if not target % v:
-        if validate(target // v, vals, n - 1, elephantmath):
-            return True
     if elephantmath:
-        if target % 10 ** len(str(v)) == v and validate(target // 10 ** len(str(v)), vals, n - 1, elephantmath):
+        d = len(str(v))
+        if target % 10 ** d == v and validate(target // 10 ** d, vals, n - 1, elephantmath):
+            return True
+    if target % v == 0:
+        if validate(target // v, vals, n - 1, elephantmath):
             return True
     return validate(target - v, vals, n - 1, elephantmath)
 
@@ -45,5 +44,5 @@ ans2 = sum(t for t, v in rows if validate(t, v, len(v) - 1, elephantmath=True))
 utils.write_output(ans, day=7, w=1)
 utils.write_output(ans2, day=7, append=1)
 
-e = time.time()
-utils.print_time_diff(s, e)
+_e = time.time()
+utils.print_time_diff(_s, _e)

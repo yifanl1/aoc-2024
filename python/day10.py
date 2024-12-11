@@ -1,6 +1,6 @@
-import time; _s = time.time()
-
 import utils
+from collections import defaultdict
+import time; _s = time.time()
 
 inp = utils.get_input(10)
 sample_inp = """89010123
@@ -14,36 +14,40 @@ sample_inp = """89010123
 """
 # inp = sample_inp
 
-DIRS = [1, -1, 1j, -1j]
+DIRS = (1, -1, 1j, -1j)
 TGT = 9
 
-
-tmap = {}
-set_s = set()
-set_d = set()
-rows = inp.strip().split("\n")
-for x, row in enumerate(rows):
+hsets = defaultdict(set)
+for x, row in enumerate(inp.strip().split("\n")):
     for y, c in enumerate(row):
-        tmap[x + y * 1j] = int(c)
-        if int(c) == 0:
-            set_s.add(x + y * 1j)
+        hsets[int(c)].add(x + y * 1j)
 
-def traverse(pos, map_, seen, distinct=True):
-    h = map_[pos]
+fhsets = {k: frozenset(v) for k, v in hsets.items()}
+
+class BlackHole(set):
+    def add(self, item):
+        pass
+
+def traverse(
+    pos: complex,
+    hsets: dict[int, frozenset[complex]],
+    seen: set[complex],
+    h: int = 0
+) -> int:
     if h == TGT:
         return 1
     ret = 0
     for d in DIRS:
         pos_ = pos + d
-        if map_.get(pos_) == h + 1 and (not distinct or pos_ not in seen):
+        if pos_ in hsets[h + 1] and pos_ not in seen:
+            ret += traverse(pos_, hsets, seen, h + 1)
             seen.add(pos_)
-            ret += traverse(pos_, map_, seen, distinct)
     return ret
 
-ans = sum(traverse(s, tmap, set()) for s in set_s)
+ans = sum(traverse(s, fhsets, set()) for s in fhsets[0])
 utils.write_output(ans, day=10, w=1)
 
-ans2 = sum(traverse(s, tmap, set(), False) for s in set_s)
+ans2 = sum(traverse(s, fhsets, BlackHole()) for s in fhsets[0])
 utils.write_output(ans2, day=10, a=1)
 
 _e = time.time()

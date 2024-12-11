@@ -120,4 +120,4 @@ def tuple_replace(tup, idx, new):
 
 def print_time_diff(s, e):
     dt = (e - s)
-    print(f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}us")
+    print(f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}µs")
