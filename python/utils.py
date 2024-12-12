@@ -6,6 +6,7 @@ from collections import defaultdict
 import heapq
 import itertools
 import os
+import math
 
 COOKIE = open("../.mycookie", "r").read()
 
@@ -113,10 +114,9 @@ def rsum(a, b):
     # returns a + a + 1 + a + 2 + ... + b - 1
     return (abs(b - a) * (a + b - 1)) // 2
 
-_LOG2_10 = 3.32192809488736
+# _LOG2_10 = 3.32192809488736
 def int_len(n):
-    l = int(n.bit_length() / _LOG2_10)
-    return (10 ** l <= abs(n)) + l
+    return math.floor(math.log10(n)) + 1
 
 def hex_to_bin(hexstr):
     bin_repr = bin(int(hexstr, 16))[2:]
@@ -135,3 +135,38 @@ def tuple_replace(tup, idx, new):
 def print_time_diff(s, e):
     dt = (e - s)
     print(f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}µs")
+
+
+class Coord2:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def __add__(self, o):
+        return Coord2(self.x + o.x, self.y + o.y)
+
+    def __sub__(self, o):
+        return Coord2(self.x - o.x, self.y - o.y)
+
+    def __mul__(self, n):
+        return Coord2(self.x * n, self.y * n)
+
+    def __key(self):
+        return self.x, self.y
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    def __eq__(self, o):
+        return self.__hash__() == o.__hash__()
+
+    def __neg__(self):
+        return self * -1
+
+    def neighbours(self):
+        return set(self + d for d in C2DIRS)
+
+    def __repr__(self):
+        return f"C({self.x}, {self.y})"
+    
+
+C2DIRS = (Coord2(1, 0), Coord2(0, -1), Coord2(-1, 0), Coord2(0, 1))
