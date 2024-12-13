@@ -4,8 +4,8 @@ import time
 _s = time.time()
 
 inp = utils.get_input(11)
-sample_inp = "125 17\n"
-# inp = sample_inp
+sample_inp = "1 0 1 0 1 0\n"
+inp = sample_inp
 
 def stone_transform(stone: int, memo) -> tuple[int, ...]:
     try:
@@ -38,7 +38,7 @@ ans2 = iterate(inp, 75)
 utils.write_output(ans, day=11, w=1)
 utils.write_output(ans2, day=11, a=1)
 
-print(iterate(inp, 1000))
+# print(iterate(inp, 1000))
 
 _e = time.time()
 utils.print_time_diff(_s, _e)

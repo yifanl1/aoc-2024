@@ -1,0 +1,26 @@
+KNOWNS: X, Y, x1, x2, y1, y2 >= 0
+Solving A, B >= 0
+
+x1A + x2B = X                             (X)
+y1A + y2B = Y                             (Y)
+
+A = (1/x1)X - (x2/x1)B                    (1) == (X)
+  = (1/y1)Y - (y2/y1)B                    (2) == (Y)
+
+B = (1/x2)X - (x1/x2)A                    (3) == (X)
+  = (1/y2)Y - (y1/y2)A                    (4) == (Y)
+
+y2B = Y - y1A                             (y2 * (4)) 
+y2B = Y - y1/x1(X - x2B)                  (sub in (1)) (5)
+x1y2B = Y - y1X + x2y1B                   x1 * (5)
+x1y2B - x2y1B = x1Y - y1X                 subtract x2y1B from both sides
+B = (x1Y - y1X) / (x1y2 - x2y1)           (B)
+
+x1A = X - x2B                             (x1 * (1))
+x1A = X - x2/y2(Y - y1A)                  (sub in (4)) (6)
+x1y2A = y2X - x2Y + x2y1A                 y2 * (6)
+x1y2A - x2y1A = y2X - x2Y                 subtract x2y1A from both sides
+A = (y2X - x2Y) / (x1y2 - x2y1)           (A)
+
+notice A, B have common divisor (x1y2 - x2y1), call it d
+idea: test A | d & B | d
