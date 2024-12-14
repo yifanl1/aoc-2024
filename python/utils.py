@@ -91,8 +91,8 @@ def get_input(day):
 
 def write_output(output, day, *, w=False, append=False, a=False):
     path = f"../outputs/{day:02d}.out"
-    if (w or append):
-        mode = "a" if append or a else "w"
+    if (w or append or a):
+        mode = "a" if (append or a) else "w"
         with open(path, mode) as outf:
             outf.write(f"{str(output)}\n")
     print(output)

@@ -4,10 +4,16 @@ from collections import defaultdict
 TCoord = tuple[int, int]
 
 inp: str = utils.get_input(12)
-inp = """AAAA
-ABCA
-ABCA
-AAAA
+inp = """AAAAAAAAAA
+ABBBBBBBBA
+ABAAAAAAAA
+ABABBBBBBB
+ABABBBBBBB
+ABABBBBBBB
+AAABBBBBBB
+CCCCCCCCCC
+CCCCCCCCCC
+CCCCCCCCCC
 """
 
 DIRS = ((-1, 0), (0, 1), (1, 0), (0, -1))
@@ -53,9 +59,6 @@ for ptype, pset in plants.items():
             perim += 4 - (2 * len(neighbours(k_) & region))
             region.add(k_)
         regions.append((frozenset(region), ptype, perim))
-
-for _ in map(print, regions):
-    pass
 
 ans = ans2 = 0
 ans = sum(len(x[0]) * x[2] for x in regions)

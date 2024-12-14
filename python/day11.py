@@ -5,7 +5,7 @@ _s = time.time()
 
 inp = utils.get_input(11)
 sample_inp = "1 0 1 0 1 0\n"
-inp = sample_inp
+# inp = sample_inp
 
 def stone_transform(stone: int, memo) -> tuple[int, ...]:
     try:
@@ -14,7 +14,7 @@ def stone_transform(stone: int, memo) -> tuple[int, ...]:
         ret = (stone * 2024,)
         d = utils.int_len(stone)
         if d % 2 == 0:
-            ret = stone // 10 ** (d // 2), stone % 10 ** (d // 2)
+            ret = divmod(stone, 10 ** (d // 2))
         memo[stone] = ret
         return ret
 
