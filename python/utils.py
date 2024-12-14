@@ -90,8 +90,8 @@ def get_input(day):
         return in_file.read()
 
 def write_output(output, day, *, w=False, append=False, a=False):
-    path = f"../outputs/{day:02d}.out"
     if (w or append or a):
+        path = f"../outputs/{day:02d}.out"
         mode = "a" if (append or a) else "w"
         with open(path, mode) as outf:
             outf.write(f"{str(output)}\n")
@@ -104,7 +104,6 @@ def gcd(a, b):
     while a % b:
         a, b = b, a % b
     return b
-
 
 def lcm(a, b):
     return (a * b) // gcd(a, b)

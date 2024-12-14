@@ -17,7 +17,7 @@ def parse_inp(inp: str, conversion: int = 0):
         yield (ax, ay, bx, by, px + conversion, py + conversion)
 
 ans = sum(map(lambda x: tokens(*x) or 0, parse_inp(inp)))
-utils.write_output(ans, day=12, w=1)
+utils.write_output(ans, day=13, w=1)
 
 ans2 = sum(map(lambda x: tokens(*x) or 0, parse_inp(inp, conversion=10000000000000)))
-utils.write_output(ans2, day=12, a=1)
+utils.write_output(ans2, day=13, a=1)

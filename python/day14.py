@@ -1,36 +1,21 @@
 import utils
 import re
 from collections import defaultdict
+import time
 
-inp, W, H = utils.get_input(14), 101, 103
-sample_inp = """p=2,4 v=2,-3
-p=0,4 v=3,-3
-p=6,3 v=-1,-3
-p=10,3 v=-1,2
-p=2,0 v=2,-1
-p=0,0 v=1,3
-p=3,0 v=-2,-2
-p=7,6 v=-1,-3
-p=3,0 v=-1,-2
-p=9,3 v=2,3
-p=7,3 v=-1,2
-p=9,5 v=-3,-3
-"""
-# inp, W, H = sample_inp, 11, 7
+_stime =  time.time()
 
-rows = inp.strip().split("\n")
+TCoord = tuple[int, int]
+TId = int
+TCell = set[TId]
+TGrid = dict[TCoord, TCell]
 
-def simulate_robot(v, p, steps=1):
-    vx_, vy_ = v
-    while vx_ < 0:
-        vx_ += W
-    while vy_ < 0:
-        vy_ += H
-    px, py = (p[0] +  vx_ * steps) % W, (p[1] +  vy_ * steps) % H
+def simulate_robot(v: TCoord, p: TCoord, steps: int = 1) -> TCoord:
+    px, py = (p[0] +  v[0] * steps) % W, (p[1] +  v[1] * steps) % H
     return (px, py)
 
 
-def step_grid(grid, robots, steps=1):
+def step_grid(grid: TGrid, robots: dict[TId, TCoord], steps: int = 1) -> TGrid:
     grid_ = defaultdict(set)
     for cell, rids in grid.items():
         for rid in rids:
@@ -38,59 +23,70 @@ def step_grid(grid, robots, steps=1):
             grid_[p_].add(rid)
     return grid_
 
+def _repr_cell(cell: TCell) -> str:
+    return str(len(cell)) if cell else '.'
 
-def buffer_grid(grid):
-    buf_s = []
+def buffer_grid(grid: TGrid) -> str:
     # Assumption: Surely Eric wouldn't ask a question that involves cursed output that requires base 10 offset,
     if max(map(len, grid.values())) > 10:
         return None
-    for r in range(H):
-        buf = [str(len(grid[c, r])) if grid[c, r] else '.' for c in range(W)]
-        buf_s.append("".join(buf))
+    buf_s = ["".join(
+        [_repr_cell(grid[c, r]) for c in range(W)]) 
+        for r in range(H)
+    ]
     return "\n".join(buf_s)
 
 
-robots = {}
-init_grid =  defaultdict(set)
-
-for rid, row in enumerate(rows):
-    px, py, vx, vy = map(int, re.findall(r"-?\d+", row))
-    robots[rid] = (vx, vy)
-    init_grid[(px, py)].add(rid)
-
-final_grid = step_grid(init_grid, robots, 100)
-q = {(x, y): 0 for x in (0, 1) for y in (0, 1)}
-mH, mW = (H // 2), (W // 2)
-for r in range(H):
-    if r == mH:
-        continue
-    for c in range(W):
-        if c == mW:
+def danger_level(grid: TGrid) -> int:
+    q = {(x, y): 0 for x in (0, 1) for y in (0, 1)}
+    mH, mW = (H // 2), (W // 2)
+    for x in range(W):
+        if x == mW:
             continue
-        q[r > mH, c > mW] += len(final_grid[c, r])
-ans = 1
-for v in q.values():
-    ans *= v
+        for y in range(H):
+            if y == mH:
+                continue
+            q[x > mW, y > mH] += len(grid[x, y])
+    danger = 1; [danger := danger * v for v in q.values()]
+    return danger
+
+def _cscore(grid: TGrid):
+    s = 1
+    for c in range(H):
+        s *= 1 + sum(len(grid[r, c]) for r in range(W))
+    return s
+
+def _rscore(grid: TGrid):
+    s = 1
+    for r in range(W):
+        s *= 1 + sum(len(grid[r, c]) for c in range(H))
+    return s
+
+inp, W, H = utils.get_input(14), 101, 103
+robots = {}
+grid =  defaultdict(set)
+
+for rid, rdata in enumerate(inp.strip().split("\n")):
+    px, py, vx, vy = map(int, re.findall(r"-?\d+", rdata))
+    robots[rid] = (vx, vy)
+    grid[(px, py)].add(rid)
+
+ans = danger_level(step_grid(grid, robots, 100))
 utils.write_output(ans, day=14, w=1)
 
-grid_ = init_grid
-seen = set()
-i = 0
-best_candidates = []
-with open("../outputs/easter.out", 'w') as f:
-    while True:
-        pbuf = buffer_grid(grid_)
-        if pbuf is None:
-            continue
-        if pbuf in seen:
-            break
-        seen.add(pbuf)
-        grid_ = step_grid(grid_, robots)
-        # Assumption: A christmas tree is connected somewhere
-        if "1111111" in pbuf:
-            best_candidates.append(i)
-        if "1111" in pbuf:
-            f.write(f"{i}\n{pbuf}\n\n")
-        i += 1
+m, best = float("inf"), -1
+for steps in range(H):
+    if (s := _cscore(step_grid(grid, robots, steps))) < m:
+        best = steps
+        m = s
+c_offset = best
+for jumps in range(W):
+    if (s := _rscore(step_grid(grid, robots, (jumps * H) + c_offset))) < m:
+        best = (jumps * H) + c_offset
+        m = s
 
-print(f"{best_candidates=}")
+utils.write_output(best, day=14, a=1)
+
+
+_etime =  time.time()
+utils.print_time_diff(_stime, _etime)
