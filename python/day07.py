@@ -16,17 +16,15 @@ sample_inp = """190: 10 19
 
 def validate(target: int, vals: tuple[int, ...], n: int, elephantmath: bool = False) -> bool:
     v = vals[n]
-    if not n:
-        return target == v
-    if v > target:
-        return False
+    if not n: return target == v
+    if v > target: return False
     if elephantmath:
-        d = len(str(v))
-        if target % 10 ** d == v and validate(target // 10 ** d, vals, n - 1, elephantmath):
+        _d, _m = divmod(target - v, 10 ** utils.int_len(v))
+        if not _m and validate(_d, vals, n - 1, elephantmath):
             return True
-    if target % v == 0:
-        if validate(target // v, vals, n - 1, elephantmath):
-            return True
+    _d, _m = divmod(target, v)
+    if not _m and validate(_d, vals, n - 1, elephantmath):
+        return True
     return validate(target - v, vals, n - 1, elephantmath)
 
 def parse_inp(inp):

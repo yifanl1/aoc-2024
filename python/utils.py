@@ -1,6 +1,6 @@
 import requests
 
-from typing import NamedTuple
+from typing import NamedTuple, Iterable
 
 from collections import defaultdict
 import heapq
@@ -126,6 +126,10 @@ def hex_to_bin(hexstr):
         bin_repr = "0000" + bin_repr
         i += 1
     return bin_repr
+
+def product(_it: Iterable[int]) -> int:
+    x = 1; [x := x * e for e in _it]
+    return x
 
 
 def tuple_replace(tup, idx, new):
