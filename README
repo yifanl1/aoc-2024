@@ -1,0 +1,11 @@
+Advent of Code 2024
+
+- Attempting to do all problems with only modules included in the Python standard library or in my personal utility module.
+
+- Assumes the existance of an `inputs/` and `outputs/` directory.
+
+CAVEAT:
+
+- The utils module requires `requests` to automatically retrieve inputs, and further requires storing the session cookie in a .mycookie file in the root directory. 
+
+- Store your input file in `inputs/$day.in` before running the code as a workaround.

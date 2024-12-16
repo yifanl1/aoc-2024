@@ -28,16 +28,13 @@ def validate(target: int, vals: tuple[int, ...], n: int, elephantmath: bool = Fa
     return validate(target - v, vals, n - 1, elephantmath)
 
 def parse_inp(inp):
-    rows = []
     for r in inp.strip().split("\n"):
         target, rest = r.split(":", maxsplit=1)
         vals = tuple(map(int, rest.split()))
-        rows.append((int(target), vals))
-    return rows
+        yield (int(target), vals)
 
-rows = parse_inp(inp)
-ans = sum(t for t, v in rows if validate(t, v, len(v) - 1, elephantmath=False))
-ans2 = sum(t for t, v in rows if validate(t, v, len(v) - 1, elephantmath=True))
+ans = sum(t for t, v in parse_inp(inp) if validate(t, v, len(v) - 1, elephantmath=False))
+ans2 = sum(t for t, v in parse_inp(inp) if validate(t, v, len(v) - 1, elephantmath=True))
 
 utils.write_output(ans, day=7, w=1)
 utils.write_output(ans2, day=7, append=1)

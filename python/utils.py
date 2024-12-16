@@ -63,6 +63,7 @@ class PQ:
         self.remove(task)
         self.add(task, priority=new_priority)
 
+
     def pop(self):
         """Remove and return the lowest priority task. Raise KeyError if empty."""
         while self.pq:
@@ -76,15 +77,25 @@ class PQ:
         return bool(len(self.entry_finder))
 
 
-def get_input(day):
-    path = f"../inputs/{day:02d}.in"
+def get_input(day, pathoverride=None):
+    dstr = f"{day:02d}"
+    if pathoverride is not None:
+        dstr = pathoverride
+    path = f"../inputs/{dstr}.in"
     if not os.path.exists(path):
-        headers = {"Cookie": COOKIE, "User-Agent": "yifanl1 AOCUtils"}
+        headers = {"Cookie": COOKIE, "User-Agent": "Personal AOC Utility by yifanl1 | l_yfn@pm.me"}
         url = f"https://adventofcode.com/2024/day/{day}/input"
 
-        response = requests.get(url, headers=headers)
-        with open(path, "w") as in_file:
-            in_file.write(response.text)
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            with open(path, "w") as in_file:
+                in_file.write(response.text)
+        except requests.exceptions.HTTPError as e:
+            print("Failed to automatically retrieve input")
+            print(f"{response.content=}")
+            print(f"try manually going to https://adventofcode.com/2024/day/{day}/input")
+            raise
 
     with open(path, "r") as in_file:
         return in_file.read()

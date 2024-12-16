@@ -6,6 +6,7 @@ _s = time.time()
 inp = utils.get_input(11)
 sample_inp = "1 0 1 0 1 0\n"
 # inp = sample_inp
+inp = "1950139 0 3 837 6116 18472 228700 45 \n"
 
 def stone_transform(stone: int, memo) -> tuple[int, ...]:
     try:

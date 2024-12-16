@@ -1,7 +1,14 @@
 .mycookie
 
-inputs/*
-outputs/*
-viz/*
+# input and solution values
+*.in
+*.out
+
+# generated visualizations can be large and not useful without an input file for context
+*.viz
+
+# ignore any extra credit, that stuff is for me alone
+*bonus*.*
+
 
 */__pycache__/
