@@ -7,6 +7,7 @@ inp = utils.get_input(9)
 sample_inp = "2333133121414131402"
 # inp = sample_inp
 # inp = "12143"
+inp="121012121010121010121212121012121010121010121212"
 
 def insort(lst, v):
     for i, v_ in enumerate(lst):
