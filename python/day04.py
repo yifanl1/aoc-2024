@@ -1,7 +1,7 @@
 import utils 
 import time
 
-s = time.time()
+_s = time.time()
 
 inp = utils.get_input(day=4).strip()
 sample_inp = """MMMSXXMASM
@@ -52,5 +52,5 @@ for x, r in enumerate(search_map):
 utils.write_output(ans, day=4, w=True, append=False)
 utils.write_output(ans2, day=4, w=True, append=True)
 
-e = time.time()
-utils.print_time_diff(s, e)
+_e = time.time()
+utils.print_time_diff(_s, _e, 4)

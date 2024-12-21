@@ -74,6 +74,6 @@ utils.write_output(best, day=14, a=1)
 
 
 _etime =  time.time()
-utils.print_time_diff(_stime, _etime)
+utils.print_time_diff(_stime, _etime, 14)
 
 print(buffer_grid(step_grid(grid, robots, best)))

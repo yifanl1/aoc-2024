@@ -31,6 +31,7 @@ def parse_inp(inp):
     for r in inp.strip().split("\n"):
         target, rest = r.split(":", maxsplit=1)
         vals = tuple(map(int, rest.split()))
+        print(len(vals))
         yield (int(target), vals)
 
 ans = sum(t for t, v in parse_inp(inp) if validate(t, v, len(v) - 1, elephantmath=False))
@@ -40,4 +41,4 @@ utils.write_output(ans, day=7, w=1)
 utils.write_output(ans2, day=7, append=1)
 
 _e = time.time()
-utils.print_time_diff(_s, _e)
+utils.print_time_diff(_s, _e, 7)

@@ -1,7 +1,7 @@
 import utils
 import time
 from collections import defaultdict
-s = time.time()
+_s = time.time()
 
 inp = utils.get_input(8)
 
@@ -55,5 +55,5 @@ for type, antennas in nodes.items():
 utils.write_output(len(uniq), day=8, w=1)
 utils.write_output(len(uniq2), day=8, a=1)
 
-e = time.time()
-utils.print_time_diff(s, e)
+_e = time.time()
+utils.print_time_diff(_s, _e, 8)

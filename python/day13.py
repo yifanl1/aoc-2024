@@ -1,5 +1,8 @@
 import utils
 import re
+import time 
+
+_s = time.time()
 
 inp = utils.get_input(13)
 def tokens(ax: int, ay: int, bx: int, by: int, px: int, py: int) -> int | None:
@@ -21,3 +24,6 @@ utils.write_output(ans, day=13, w=1)
 
 ans2 = sum(map(lambda x: tokens(*x) or 0, parse_inp(inp, conversion=10000000000000)))
 utils.write_output(ans2, day=13, a=1)
+
+_e = time.time()
+utils.print_time_diff(_s, _e, 13)

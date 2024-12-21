@@ -7,8 +7,7 @@ _s = time.time()
 
 TPos: TypeAlias = tuple[int, int]
 
-# inp, MAX, P1 = utils.get_input(18), 70, 1024
-inp, MAX, P1 = utils.get_input(18, pathoverride="18bonus"), 212, 1024
+inp, MAX, P1 = utils.get_input(18), 70, 1024
 DIRS = ((-1, 0), (0, 1), (1, 0), (0, -1))
 
 rows = inp.strip().split("\n")
@@ -58,4 +57,4 @@ utils.write_output(ans2, day=18, a=1)
 
 _e = time.time()
 
-utils.print_time_diff(_s, _e)
+utils.print_time_diff(_s, _e, 18)

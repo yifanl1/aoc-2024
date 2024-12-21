@@ -146,9 +146,19 @@ def product(_it: Iterable[int]) -> int:
 def tuple_replace(tup, idx, new):
     return tuple(tup[i] if i != idx else new for i in range(len(tup)))
 
-def print_time_diff(s, e):
+def print_time_diff(s, e, day, dryrun=False):
     dt = (e - s)
-    print(f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}µs")
+    tout = (f"took {dt * 1000:.2f}ms or {dt * 1000000:.2f}µs")
+    print(tout)
+    if dryrun:
+        return
+
+    with open("../outputs/time.out", "r") as f:
+        for line in f.readlines():
+            if line.startswith(f"Day {day:02d}"):
+                return
+    with open("../outputs/time.out", "w" if day == 1 else "a") as f:
+        f.write(f"Day {day:02d} {tout}\n")
 
 
 class Coord2:

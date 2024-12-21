@@ -1,4 +1,7 @@
 import utils
+import time
+
+_s = time.time()
 
 TPos: type = tuple[int, int]
 TGrid: type =  dict[TPos, str]
@@ -71,3 +74,6 @@ ans2 = sum(map(gps, filter(lambda x: grid2_[x] == '[', grid2_.keys())))
 
 utils.write_output(ans, day=15, w=1)
 utils.write_output(ans2, day=15, a=1)
+
+_e = time.time()
+utils.print_time_diff(_s, _e, 15)

@@ -1,21 +1,12 @@
 import utils
 from collections import defaultdict
+import time
+
+_s = time.time()
 
 TCoord = tuple[int, int]
 
 inp: str = utils.get_input(12)
-inp = """AAAAAAAAAA
-ABBBBBBBBA
-ABAAAAAAAA
-ABABBBBBBB
-ABABBBBBBB
-ABABBBBBBB
-AAABBBBBBB
-CCCCCCCCCC
-CCCCCCCCCC
-CCCCCCCCCC
-"""
-
 DIRS = ((-1, 0), (0, 1), (1, 0), (0, -1))
 neighbours = lambda c: set((c[0] + d[0], c[1] + d[1]) for d in DIRS)
 
@@ -66,3 +57,6 @@ ans2 = sum(len(x[0]) * corners(x[0]) for x in regions)
 
 utils.write_output(ans, day=12, w=1)
 utils.write_output(ans2, day=12, a=1)
+
+_e = time.time()
+utils.print_time_diff(_s, _e, 12)

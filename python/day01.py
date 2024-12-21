@@ -2,7 +2,7 @@ import utils
 from collections import defaultdict
 import time
 
-s = time.time()
+_s = time.time()
 
 inp = utils.get_input(1)
 rows = inp.split("\n")
@@ -30,5 +30,5 @@ for i, a in enumerate(c1):
 utils.write_output(ans, day=1, w=True, append=False)
 utils.write_output(ans2, day=1, w=True, append=True)
 
-e = time.time()
-utils.print_time_diff(s, e)
+_e = time.time()
+utils.print_time_diff(_s, _e, 1)

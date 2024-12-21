@@ -51,4 +51,4 @@ ans2 = sum(traverse(s, fhsets, BlackHole()) for s in fhsets[0])
 utils.write_output(ans2, day=10, a=1)
 
 _e = time.time()
-utils.print_time_diff(_s, _e)
+utils.print_time_diff(_s, _e, 10)

@@ -31,4 +31,4 @@ ans2 = sum(map(composition_cnt, candidates))
 utils.write_output(ans2, day=19, a=1)
 
 _e = time.time()
-utils.print_time_diff(_s, _e)
+utils.print_time_diff(_s, _e, 19)

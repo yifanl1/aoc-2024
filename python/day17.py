@@ -1,5 +1,8 @@
 import utils
 from collections import deque
+import time
+
+_s = time.time()
 
 def op_(program: list[int], regs: list[int, int, int], ptr: int, outbuf: list[int]) -> int:
     assert ptr + 1 < len(program)
@@ -50,9 +53,9 @@ utils.write_output(",".join(map(str, outbuf)), 17, w=1)
 
 """
 B = A % 8         # bst 4
-B = B ^ 2         # bxl 2
+B = B ^ _         # bxl _
 C = A >> B        # cdv 5
-B = B ^ 3         # bxl 3
+B = B ^ _         # bxl _
 B = B ^ C         # bxc 3
 out B % 8         # out 5
 A = A // 8        # adv 3
@@ -72,10 +75,13 @@ def quineify(program: list[int]) -> int:
             val_ = (val * 8) + test
             regs = [val_, 0 ,0]
             if run_program(program, regs) == program[offset:]:
-                print(offset, test, digitacc)
+                # print(offset, test, digitacc)
                 if offset == 0:
                     return val_ 
                 candidates.append((program, offset - 1, val_, (test, *digitacc)))
     raise ValueError("Could not find appropriate value, consider pushing up starting offset")
 
 utils.write_output(quineify(program), 17, a=1)
+
+_e = time.time()
+utils.print_time_diff(_s, _e, 17)

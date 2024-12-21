@@ -5,9 +5,6 @@ _s = time.time()
 
 inp = utils.get_input(9)
 sample_inp = "2333133121414131402"
-# inp = sample_inp
-# inp = "12143"
-inp="121012121010121010121212121012121010121010121212"
 
 def insort(lst, v):
     for i, v_ in enumerate(lst):
@@ -68,4 +65,4 @@ utils.write_output(ans, day=9, w=1)
 utils.write_output(ans2, day=9, a=1)
 
 _e = time.time()
-utils.print_time_diff(_s, _e)
+utils.print_time_diff(_s, _e, 9)

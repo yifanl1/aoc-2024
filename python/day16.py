@@ -1,11 +1,15 @@
 import utils
 import heapq
+from typing import TypeAlias
+import time
 
-TPos: type = tuple[int, int]
-TDPos: type = tuple[TPos, int]
-TGrid: type = set[TPos]
-TCostDict: type = dict[TDPos, int]
-TPrevDict: type =  dict[TDPos, list[TDPos]]
+_s = time.time()
+
+TPos: TypeAlias = tuple[int, int]
+TDPos: TypeAlias = tuple[TPos, int]
+TGrid: TypeAlias = set[TPos]
+TCostDict: TypeAlias = dict[TDPos, int]
+TPrevDict: TypeAlias =  dict[TDPos, list[TDPos]]
 
 DIRS = [(0, 1), (-1, 0), (0, -1), (1, 0)]
 
@@ -86,3 +90,6 @@ while (spos, sdir) not in best_nodes:
 
 uniq_cells = set(pos for pos, d in best_nodes)
 utils.write_output(len(uniq_cells), day=16, a=1)
+
+_e = time.time()
+utils.print_time_diff(_s, _e, 16)
