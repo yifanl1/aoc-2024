@@ -1,42 +1,46 @@
 import utils
 from collections import deque, Counter
+import time
+
+_s = time.time()
 
 inp = utils.get_input(22)
 
 # 16777216 = 2 ** 24
-PRUNE = 0b111111111111111111111111
+# so mod 2 ** 24 is the same as taking the last 23 bits!
+PRUNE = (1 << 24) - 1
 
-_CACHE = {}
-def secret(v, n=1):
+def secret(v, psum, n=1):
     i = 0
-    seq = deque()
-    price_map = {}
+    seq = (None, None, None, None)
+    seen = {}
     for i in range(n):
-        if v in _CACHE:
-            v_, p, d = _CACHE[v]
-        else:
-            v_ = (v ^ (v << 6)) & PRUNE
-            v_ = (v_ ^ (v_ >> 5)) & PRUNE
-            v_ = (v_ ^ (v_ << 11)) & PRUNE
-            p = v_ % 10
-            d = (v_ % 10 - v % 10)
-            _CACHE[v] = v_, p, d
+        v_ = (v ^ (v << 6)) & PRUNE
+        v_ = (v_ ^ (v_ >> 5)) & PRUNE
+        v_ = (v_ ^ (v_ << 11)) & PRUNE
+        p, d = v_ % 10, (v_ % 10 - v % 10)
         v = v_
-        seq.append(d)
-        if i >= 3:
-            k = tuple(seq)
-            if k not in price_map:
-                price_map[k] = p
-            seq.popleft()
-    return v, price_map
+
+        seq = (*seq[1:], d)
+        # Greed is good
+        if d > 0 and i >= 3 and seq not in seen:
+            psum[seq] += p
+            seen[seq] = p
+    return v, seen
 
 allsecrets = 0
+all_maps = []
 psum = Counter()
+all_maps = []
 for row in inp.strip().split("\n"):
-    v_, pmap = secret(int(row), 2000)
+    v_, pmap = secret(int(row), psum, 2000)
     allsecrets += v_
-    psum += pmap
+    all_maps.append(pmap)
 bananamax = max(psum.values())
 
 utils.write_output(allsecrets, 22, w=1)
 utils.write_output(bananamax, 22, a=1)
+
+_e = time.time()
+
+utils.print_time_diff(_s, _e, day=22)
